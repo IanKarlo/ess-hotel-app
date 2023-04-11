@@ -1,31 +1,22 @@
-import {
-  MockAuthService,
-  MockedEncryptService,
-  MockedJWTService,
-  MockedUserRepository,
-} from '../../../../test/mocks/mockedClasses';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
-import { UserAuthDTO } from './interfaces';
 
 describe('AuthController', () => {
   let controller: AuthController;
 
-  const mockedUserRepository = new MockedUserRepository();
-  const mockedEncryptService = new MockedEncryptService();
-  const mockedJWTService = new MockedJWTService();
-  const mockedAuthService = new MockAuthService(
-    mockedUserRepository,
-    mockedEncryptService,
-    mockedJWTService,
-  );
-
   beforeEach(async () => {
-    controller = new AuthController(mockedAuthService);
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [AuthController],
+    }).compile();
+
+    controller = module.get<AuthController>(AuthController);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+<<<<<<< HEAD
+=======
 
   it('should be able to validate a valid login', async () => {
     const expectedData = {
@@ -46,4 +37,5 @@ describe('AuthController', () => {
 
     expect(response).toBe(expectedData);
   });
+>>>>>>> refs/remotes/origin/master
 });

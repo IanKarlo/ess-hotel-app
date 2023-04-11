@@ -65,7 +65,7 @@ export class UserController {
   }
 
   @Post('admin')
-  async createAdminUser(@Body() body: ADMUserCreationDTO) {
+  async createAdminUser(@Body() body: ADMUserCreationDTO, response) {
     const { email, password, name, cpf } = body;
 
     const userByEmail = await this.userRepository.getUserByEmail(body.email);

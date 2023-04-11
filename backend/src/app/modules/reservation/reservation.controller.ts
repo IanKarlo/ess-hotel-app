@@ -19,7 +19,6 @@ import { ReservationRepository } from 'src/infra/database/repositories/Reservati
 import { ReservationConnectionRepository } from 'src/infra/database/repositories/ReservationConnectionRepository';
 import UserRepository from 'src/infra/database/repositories/UserRepository';
 import FavoritesRepository from 'src/infra/database/repositories/FavoritesRepository';
-import { MailService } from 'src/mail/mail.service'; 
 import { EvaluationCreationDTO } from 'src/infra/database/interfaces/evalutation.interface';
 import EvaluationRepository from 'src/infra/database/repositories/EvaluationRepository';
 
@@ -42,8 +41,6 @@ export class ReservationController {
     private reservationService: ReservationService,
     private reservationConnectionRepository: ReservationConnectionRepository,
     private favoritesRepository: FavoritesRepository,
-    private mailService: MailService,
-    private userRepository: UserRepository,
     private evaluationRepository: EvaluationRepository,
   ) {}
 
@@ -56,6 +53,13 @@ export class ReservationController {
   @Get('/filters')
   async getReservationsWithFilters(@Query() params: FilterParams) {
     return this.reservationRepository.getWithParams(params);
+  }
+
+  @Get('/solicitations')
+  async getAllReservationSolicitation() {
+    const data =
+      await this.reservationRepository.getAllSolicitationsOfReservations();
+    return data;
   }
 
   @Get(':Id')
@@ -94,10 +98,6 @@ export class ReservationController {
       acceptReservation.id,
       acceptReservation.accepted,
     );
-    const reservationId = await this.reservationConnectionRepository.getConnectionById(acceptReservation.id);
-    const userGotAccepted = await this.userRepository.getUserById(reservationId.userId)
-
-    await this.mailService.sendUserConfirmation(userGotAccepted)
   }
 
   @Get('/created/:id')
@@ -196,10 +196,4 @@ export class ReservationController {
     return response;
   }
 
-  @Get('/solicitations')
-  async getAllReservationSolicitation() {
-    const data =
-      await this.reservationRepository.getAllSolicitationsOfReservations();
-    return data;
-  }
 }

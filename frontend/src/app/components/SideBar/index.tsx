@@ -7,13 +7,12 @@ interface SideBarProps {
 }
 
 export default function SideBar({ closeSideBar }: SideBarProps) {
-  const { session, setSession } = useSession();
+  const { setSession } = useSession();
 
   const sessionLogout = () => {
     setSession({
       token: "",
       userName: "",
-      ADM: false,
     });
     window.localStorage.removeItem("sessionData");
 
@@ -27,6 +26,7 @@ export default function SideBar({ closeSideBar }: SideBarProps) {
   };
 
   const setHouter = (value: string) => {
+    console.log("ENTREI");
     if (window) {
       window.location.href = value;
     }
@@ -38,7 +38,7 @@ export default function SideBar({ closeSideBar }: SideBarProps) {
         {IconClose}
       </button>
       <span className="iconUserCircle">{IconUserCircle}</span>
-      {session.ADM ? (
+      {false ? (
         <>
           <button className="sideBar_Option_Button">Gerenciar reservas</button>
           <button

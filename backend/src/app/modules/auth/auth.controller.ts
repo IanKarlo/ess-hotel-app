@@ -8,8 +8,10 @@ export class AuthController {
 
   @Post()
   async userLogin(@Body() userCredentials: UserAuthDTO) {
-    const userData = await this.authService.validateLogin(userCredentials);
-    return userData;
+    const test = await this.authService.validateLogin(userCredentials);
+    console.log('Login response');
+    console.log(test);
+    return test;
   }
 
   @Get(':token')

@@ -17,7 +17,6 @@ export class AuthService {
       password: hash,
       id,
       name,
-      role,
     } = await this.userRepository.getUserByEmail(email);
     const isPasswordValid = this.encryptService.validatePassword(
       password,
@@ -26,11 +25,7 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new Error('Invalid credentials');
     }
-    return {
-      token: this.jwtService.getJWT(id),
-      userName: name,
-      ADM: role === 'USER' ? false : true,
-    };
+    return { token: this.jwtService.getJWT(id), userName: name };
   }
 
   async validateTokenAndReturnId(token: string) {
